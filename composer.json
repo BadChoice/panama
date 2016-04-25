@@ -1,0 +1,23 @@
+{
+    "name": "badchoice/panama",
+    "description": "Basic shop util classes such as cart and payments",
+    "require": {
+        "php": ">=5.4.0",
+        "sermepa/sermepa": "^1.1"
+    },
+    "authors": [
+        {
+            "name": "Badchoice",
+            "email": "jordi@gloobus.net"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "database"
+        ],
+        "psr-4": {
+            "BadChoice\\Panama\\": "src"
+        }
+    },
+    "minimum-stability": "stable"
+}
