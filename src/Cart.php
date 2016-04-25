@@ -59,6 +59,9 @@ class Cart{
         Session::forget($this->session_cart_name);
     }
 
+    //=============================================================================
+    // PRIVATE
+    //=============================================================================
     private function getContentKey($cart_id){
         return $this->contents->search(function ($content, $key) use (&$cart_id) {
             return $content->cart_id == $cart_id;
