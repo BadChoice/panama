@@ -6,20 +6,27 @@ class Cart{
 
     public function __construct()
     {
-        $this->contents = Session::get($this->session_cart_name);
-    }
-
-    public function sayHello(){
-        return "Hello!";
+        $this->contents = collect(Session::get($this->session_cart_name));
     }
 
     public function add(array $content){
-        $this->contents[] = new CartContent($content);
+        $this->contents->push(new CartContent($content));
         $this->saveCart();
     }
 
+    public function remove($cart_id){
+
+    }
     public function contents(){
         return $this->contents;
+    }
+
+    public function total(){
+        $total = 0;
+        foreach($this->contents() as $content){
+            $total += $content->total();
+        }
+        return $total;
     }
 
     public function destroy(){
@@ -27,6 +34,6 @@ class Cart{
     }
 
     private function saveCart(){
-        Session::put($this->session_cart_name , $this->contents);
+        Session::put($this->session_cart_name , $this->contents->toArray());
     }
 }
