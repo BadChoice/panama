@@ -9,14 +9,40 @@ class Cart{
         $this->contents = collect(Session::get($this->session_cart_name));
     }
 
-    public function add(array $content){
-        $this->contents->push(new CartContent($content));
+    public function add(array $newContent){
+        $newContent = new CartContent($newContent);
+        foreach($this->contents as $content){
+            if($content->isEqual($newContent)){
+                $content->update(["quantity" => $content->quantity + $newContent->quantity]);
+                $this->saveCart();
+                return;
+            }
+        }
+        $this->contents->push($newContent);
+        $this->saveCart();
+    }
+
+    public function update($cart_id, array $updateArray){
+        $content =  $this->contents->get(
+            $this->getContentKey($cart_id)
+        );
+        $content->update($updateArray);
         $this->saveCart();
     }
 
     public function remove($cart_id){
-
+        $this->contents = $this->contents->except(
+            $this->getContentKey($cart_id)
+        );
+        $this->saveCart();
     }
+
+    public function content($cart_id){
+        return $this->contents->get(
+            $this->getContentKey($cart_id)
+        );
+    }
+
     public function contents(){
         return $this->contents;
     }
@@ -33,6 +59,11 @@ class Cart{
         Session::forget($this->session_cart_name);
     }
 
+    private function getContentKey($cart_id){
+        return $this->contents->search(function ($content, $key) use (&$cart_id) {
+            return $content->cart_id == $cart_id;
+        });
+    }
     private function saveCart(){
         Session::put($this->session_cart_name , $this->contents->toArray());
     }

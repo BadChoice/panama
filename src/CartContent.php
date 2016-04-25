@@ -24,6 +24,21 @@ class CartContent{
         $this->options  = isset($content['$options'])   ? $content['$options']:collect([]);
     }
 
+    public function update($updateArray){
+        foreach($updateArray as $key => $value){
+            $this->$key = $value;
+        }
+    }
+
+    public function isEqual($content){
+        if($this->id        != $content->id)      return false;
+        if($this->name      != $content->name)    return false;
+        if($this->price     != $content->price)   return false;
+        if($this->tax       != $content->tax)     return false;
+        if($this->options   != $content->options) return false;
+        return true;
+    }
+
     public function individualPrice(){
         $individualPrice = $this->price;
         foreach ($this->options as $option) {
