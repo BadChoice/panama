@@ -9,6 +9,9 @@ class CartContent{
     public $options;
     public $taxPercentage;  // Included in price
 
+    private $model;
+    private $modelNamespace;
+
     public function __construct(array $content)
     {
         if(!isset($content['id']))      { throw new \Exception("Id is required");   }
@@ -49,6 +52,28 @@ class CartContent{
 
     public function total(){
         return $this->individualPrice() * $this->quantity;
+    }
+
+    public function associate($model, $modelNamespace = ""){
+        if( ! class_exists($modelNamespace . '\\' . $model)) throw new \Exception("Model doesn't exists");
+        $this->model            = $model;
+        $this->modelNamespace   = $modelNamespace;
+        return $this;
+    }
+
+    public function __get($arg)
+    {
+        /*if($this->has($arg))
+        {
+            return $this->get($arg);
+        }*/
+        if($arg == lcfirst($this->model))
+        {
+            $modelInstance = $this->modelNamespace ? $this->modelNamespace . '\\' .$this->model: $this->model;
+            $model = new $modelInstance;
+            return $model->find($this->id);
+        }
+        return null;
     }
 
 }

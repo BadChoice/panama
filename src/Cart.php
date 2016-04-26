@@ -15,11 +15,12 @@ class Cart{
             if($content->isEqual($newContent)){
                 $content->update(["quantity" => $content->quantity + $newContent->quantity]);
                 $this->saveCart();
-                return;
+                return $content;
             }
         }
         $this->contents->push($newContent);
         $this->saveCart();
+        return $newContent;
     }
 
     public function update($cart_id, array $updateArray){
@@ -53,6 +54,14 @@ class Cart{
             $total += $content->total();
         }
         return $total;
+    }
+
+    public function count(){
+        $count = 0;
+        foreach($this->contents as $content){
+            $count += $content->quantity;
+        }
+        return $count;
     }
 
     public function destroy(){
