@@ -1,7 +1,6 @@
 <? namespace BadChoice\Panama\Payments;
 
 use Sermepa\Tpv\Tpv;
-use Config;
 
 /**
  * Class Redsys
@@ -73,24 +72,19 @@ class Redsys extends BasePayService{
      */
     public function setup(){
 
-        $merchant   = Config::get('services.redsys.merchantCode');
-        $terminal   = Config::get('services.redsys.terminal');
-        $currency   = Config::get('services.redsys.currency');
-
         $this->tpv = new Tpv();
 
-        $this->tpv->setMerchantcode     ($merchant);    //Reemplazar por el código que proporciona el banco
-        $this->tpv->setCurrency         ($currency);
+        $this->tpv->setMerchantcode     ($this->config['merchant']);    //Reemplazar por el código que proporciona el banco
+        $this->tpv->setCurrency         ($this->config['currency']);
         $this->tpv->setTransactiontype  ('0');
-        $this->tpv->setTerminal         ($terminal);
+        $this->tpv->setTerminal         ($this->config['terminal']);
         $this->tpv->setMethod           ('C');          //Solo pago con tarjeta, no mostramos iupay
 
-        $this->tpv->setNotification     (Config::get('services.redsys.merchantURL')); //Url de notificacion
-        $this->tpv->setUrlOk            (Config::get('services.redsys.okURL')); //Url OK
-        $this->tpv->setUrlKo            (Config::get('services.redsys.cancelURL')); //Url KO
+        $this->tpv->setNotification     ($this->config['merchantURL']); //Url de notificacion
+        $this->tpv->setUrlOk            ($this->config['okURL']);       //Url OK
+        $this->tpv->setUrlKo            ($this->config['cancelURL']);   //Url KO
 
         $this->tpv->setVersion          ('HMAC_SHA256_V1');
-
 
         if(!$this->test){
             $this->tpv->setEnviroment('live');
@@ -102,7 +96,7 @@ class Redsys extends BasePayService{
 
     public function payForm($amount, $description, $orderId){
 
-        $key        = Config::get('services.redsys.secretKey');
+        $key        = $this->config['secret'];
         $orderID    = str_pad($orderId, 4, "0", STR_PAD_LEFT);
 
         $this->tpv->setAmount($amount);
@@ -131,7 +125,7 @@ class Redsys extends BasePayService{
             $this->tpv = new Tpv();
         }
 
-        $key                = Config::get('services.redsys.secretKey');
+        $key                = $this->config['secret'];
 
         $parameters         = $this->tpv->getMerchantParameters($_POST["Ds_MerchantParameters"]);
         $DsResponse         = $parameters["Ds_Response"];

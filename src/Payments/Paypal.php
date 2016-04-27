@@ -1,7 +1,5 @@
 <? namespace BadChoice\Panama\Payments;
 
-use Config;
-
 /**
  * Class Paypal
  *
@@ -43,14 +41,11 @@ class Paypal extends BasePayService{
     const REAL_URL = "https://www.paypal.com/cgi-bin/webscr";
     const TEST_URL = "https://www.sandbox.paypal.com/cgi-bin/webscr";
 
-
     // Configuration values
     private $business;
     private $ipnURL;
     private $returnURL;
     private $cancelURL;
-
-
 
     /**
      * @return bool
@@ -64,16 +59,10 @@ class Paypal extends BasePayService{
      */
     public function setup(){
 
-        if($this->config == null) {
-            $this->business = Config::get('services.paypal.business');
-        }
-        else{
-            $this->business = $this->config['business'];
-        }
-
-        $this->ipnURL           = Config::get('services.paypal.ipnURL');
-        $this->returnURL        = Config::get('services.paypal.returnURL');
-        $this->cancelURL        = Config::get('services.paypal.cancelURL');
+        $this->business         = $this->config['business'];
+        $this->ipnURL           = $this->config['ipnURL'];
+        $this->returnURL        = $this->config['okURL'];
+        $this->cancelURL        = $this->config['cancelURL'];
 
         $this->urlPayment       = Paypal::REAL_URL;
 

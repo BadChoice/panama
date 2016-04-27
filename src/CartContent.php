@@ -9,6 +9,13 @@ class CartContent{
     public $options;
     public $taxPercentage;  // Included in price
 
+    /**
+     * Custom user data, it needs to be a collection and if it has the variable price it will be added
+     * to the content price
+     * @var
+     */
+    public $userData;       // TODO: Use options instead?
+
     private $model;
     private $modelNamespace;
 
@@ -17,14 +24,15 @@ class CartContent{
         if(!isset($content['id']))      { throw new \Exception("Id is required");   }
         if(!isset($content['name']))    { throw new \Exception("Name is required"); }
 
-        $this->id       = $content['id'];
-        $this->name     = $content['name'];
+        $this->id           = $content['id'];
+        $this->name         = $content['name'];
 
-        $this->cart_id  = isset($content['cart_id'])    ? $content['cart_id']:uniqid();
-        $this->price    = isset($content['price'])      ? $content['price']:0;
-        $this->quantity = isset($content['quantity'])   ? $content['price']:1;
-        $this->tax      = isset($content['tax'])        ? $content['tax']:0;
-        $this->options  = isset($content['$options'])   ? $content['$options']:collect([]);
+        $this->cart_id      = isset($content['cart_id'])    ? $content['cart_id']:uniqid();
+        $this->price        = isset($content['price'])      ? $content['price']:0;
+        $this->quantity     = isset($content['quantity'])   ? $content['price']:1;
+        $this->tax          = isset($content['tax'])        ? $content['tax']:0;
+        $this->options      = isset($content['$options'])   ? $content['$options']:collect([]);
+        $this->userData     = isset($content['userData'])   ? $content['userData']:collect([]);
     }
 
     public function update($updateArray){
@@ -34,11 +42,12 @@ class CartContent{
     }
 
     public function isEqual($content){
-        if($this->id        != $content->id)      return false;
-        if($this->name      != $content->name)    return false;
-        if($this->price     != $content->price)   return false;
-        if($this->tax       != $content->tax)     return false;
-        if($this->options   != $content->options) return false;
+        if($this->id            != $content->id)            return false;
+        if($this->name          != $content->name)          return false;
+        if($this->price         != $content->price)         return false;
+        if($this->tax           != $content->tax)           return false;
+        if($this->options       != $content->options)       return false;
+        if($this->menuContents  != $content->menuContents)  return false;
         return true;
     }
 
@@ -46,6 +55,10 @@ class CartContent{
         $individualPrice = $this->price;
         foreach ($this->options as $option) {
             $individualPrice += $option->price;
+        }
+        foreach ($this->userData as $userData){
+            if(isset($userData->price))
+                $individualPrice += $userData->price;
         }
         return $individualPrice;
     }

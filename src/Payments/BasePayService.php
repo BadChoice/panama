@@ -21,9 +21,9 @@ class BasePayService{
     //==================================================================
     // STATIC Constructor
     //==================================================================
-    public static function createNew($type, $test){
-        if($type == 'paypal')       return new Paypal($test);
-        else if($type == 'redsys')  return new Redsys($test);
+    public static function createNew($type, $test, $config){
+        if($type == 'paypal')       return new Paypal($test, $config);
+        else if($type == 'redsys')  return new Redsys($test, $config);
         else return null;
     }
 
