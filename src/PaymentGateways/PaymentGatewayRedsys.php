@@ -66,7 +66,7 @@ class PaymentGatewayRedsys extends PaymentGateway{
     public function doesReturnCustomer(){
         return false;
     }
-    public function getConfigFields(){
+    public static function getConfigFields(){
         return ['merchant', 'currency', 'terminal','secret','secret_test'];
     }
 

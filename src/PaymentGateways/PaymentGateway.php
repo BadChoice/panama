@@ -30,7 +30,18 @@ abstract class PaymentGateway{
         else return null;
     }
 
-    public abstract function getConfigFields();
+    public static function provides(){
+        return [
+            static::PAYPAL => 'Paypal',
+            static::REDSYS => 'Redsys',
+        ];
+    }
+
+    public static function configFieldsFor($type){
+        if($type        == static::PAYPAL)  return PaymentGatewayPaypal::getConfigFields();
+        else if($type   == static::REDSYS)  return PaymentGatewayRedsys::getConfigFields();
+        else return null;
+    }
 
     //==================================================================
     // CONSTRUCTOR
@@ -88,9 +99,9 @@ abstract class PaymentGateway{
     public function setup(){ }
 
     /**
-    * The form should have 'payment' as id so it can be redirected
-    * This should return the $this so it can be chained with redirect
-    */
+     * The form should have 'payment' as id so it can be redirected
+     * This should return the $this so it can be chained with redirect
+     */
     protected function payForm($amount, $description, $orderId){}
 
     /**

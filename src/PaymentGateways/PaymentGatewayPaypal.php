@@ -54,7 +54,7 @@ class PaymentGatewayPaypal extends PaymentGateway{
         return true;
     }
 
-    public function getConfigFields(){
+    public static function getConfigFields(){
         return ['business', 'business_test'];
     }
 
@@ -68,10 +68,10 @@ class PaymentGatewayPaypal extends PaymentGateway{
         $this->returnURL        = $this->config['okURL'];
         $this->cancelURL        = $this->config['cancelURL'];
 
-        $this->urlPayment       = Paypal::REAL_URL;
+        $this->urlPayment       = static::REAL_URL;
 
         if ($this->test) {
-            $this->urlPayment   = Paypal::TEST_URL;
+            $this->urlPayment   = static::TEST_URL;
         }
     }
 
