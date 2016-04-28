@@ -1,6 +1,9 @@
 <? namespace BadChoice\Panama\Payments;
 
-class BasePayService{
+abstract class PaymentGateway{
+
+    const PAYPAL = 0;
+    const REDSYS = 1;
 
     public $test;
     public $config;
@@ -22,10 +25,12 @@ class BasePayService{
     // STATIC Constructor
     //==================================================================
     public static function createNew($type, $test, $config){
-        if($type == 'paypal')       return new Paypal($test, $config);
-        else if($type == 'redsys')  return new Redsys($test, $config);
+        if($type        == static::PAYPAL)  return new PaymentGatewayPaypal($test, $config);
+        else if($type   == static::REDSYS)  return new PaymentGatewayRedsys($test, $config);
         else return null;
     }
+
+    public abstract function getConfigFields();
 
     //==================================================================
     // CONSTRUCTOR

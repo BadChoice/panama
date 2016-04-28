@@ -56,7 +56,7 @@ use Sermepa\Tpv\Tpv;
  *
  * @package Revo\Services
  */
-class Redsys extends BasePayService{
+class PaymentGatewayRedsys extends PaymentGateway{
 
     private $tpv;
 
@@ -65,6 +65,9 @@ class Redsys extends BasePayService{
      */
     public function doesReturnCustomer(){
         return false;
+    }
+    public function getConfigFields(){
+        return ['merchant', 'currency', 'terminal','secret','secret_test'];
     }
 
     /**

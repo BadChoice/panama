@@ -36,7 +36,7 @@
  *
  * @package Revo\Services
  */
-class Paypal extends BasePayService{
+class PaymentGatewayPaypal extends PaymentGateway{
 
     const REAL_URL = "https://www.paypal.com/cgi-bin/webscr";
     const TEST_URL = "https://www.sandbox.paypal.com/cgi-bin/webscr";
@@ -52,6 +52,10 @@ class Paypal extends BasePayService{
      */
     public function doesReturnCustomer(){
         return true;
+    }
+
+    public function getConfigFields(){
+        return ['business', 'business_test'];
     }
 
     /**
