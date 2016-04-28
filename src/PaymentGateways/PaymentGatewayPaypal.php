@@ -1,5 +1,4 @@
-<? namespace BadChoice\Panama\Payments;
-
+<?php namespace BadChoice\Panama\PaymentGateways;
 /**
  * Class Paypal
  *

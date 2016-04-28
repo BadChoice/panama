@@ -1,11 +1,11 @@
-<?php namespace BadChoice\Panama\PaymentGatewayTrait;
+<?php namespace BadChoice\Panama\PaymentGateways\Traits;
 
 trait PaymentGatewayTrait {
 
     public function save(array $options = [])
     {
         $config = [];
-        $configFields = \BadChoice\Panama\Payments\PaymentGateway::configFieldsFor($this->type);
+        $configFields = \BadChoice\Panama\PaymentGateways\PaymentGateway::configFieldsFor($this->type);
         foreach($configFields as $field){
             $config[$field] = $this->$field;
             unset($this->$field);

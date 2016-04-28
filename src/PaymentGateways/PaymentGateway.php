@@ -1,4 +1,4 @@
-<? namespace BadChoice\Panama\Payments;
+<?php namespace BadChoice\Panama\PaymentGateways;
 
 abstract class PaymentGateway{
 
@@ -99,9 +99,9 @@ abstract class PaymentGateway{
     public function setup(){ }
 
     /**
-     * The form should have 'payment' as id so it can be redirected
-     * This should return the $this so it can be chained with redirect
-     */
+    * The form should have 'payment' as id so it can be redirected
+    * This should return the $this so it can be chained with redirect
+    */
     protected function payForm($amount, $description, $orderId){}
 
     /**
