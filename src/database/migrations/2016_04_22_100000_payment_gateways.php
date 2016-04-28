@@ -32,6 +32,6 @@ class PaymentGateways extends Migration
      */
     public function down()
     {
-        Schema::drop('payment_modules');
+        Schema::drop('payment_gateways');
     }
 }
