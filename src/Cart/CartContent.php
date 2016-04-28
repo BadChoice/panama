@@ -1,4 +1,4 @@
-<?php namespace BadChoice\Panama;
+<?php namespace BadChoice\Panama\Cart;
 
 class CartContent{
     public $cart_id;        // Unique cart id to find the content

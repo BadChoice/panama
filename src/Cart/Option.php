@@ -1,4 +1,4 @@
-<?php namespace BadChoice\Panama;
+<?php namespace BadChoice\Panama\Cart;
 
 class Option{
     public $name;
