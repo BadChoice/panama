@@ -82,9 +82,9 @@ class PaymentGatewayRedsys extends PaymentGateway{
         $this->tpv->setTerminal         ($this->config['terminal']);
         $this->tpv->setMethod           ('C');          //Solo pago con tarjeta, no mostramos iupay
 
-        $this->tpv->setNotification     ($this->config['merchantURL']); //Url de notificacion
-        $this->tpv->setUrlOk            ($this->config['okURL']);       //Url OK
-        $this->tpv->setUrlKo            ($this->config['cancelURL']);   //Url KO
+        $this->tpv->setNotification     ($this->config['notificationURL']); //Url de notificacion
+        $this->tpv->setUrlOk            ($this->config['okURL']);           //Url OK
+        $this->tpv->setUrlKo            ($this->config['cancelURL']);       //Url KO
 
         $this->tpv->setVersion          ('HMAC_SHA256_V1');
 
@@ -92,6 +92,7 @@ class PaymentGatewayRedsys extends PaymentGateway{
             $this->tpv->setEnviroment('live');
         }
         else{
+            $this->config['secret'] = $this->config['secret_test'];
             $this->tpv->setEnviroment('test');
         }
     }

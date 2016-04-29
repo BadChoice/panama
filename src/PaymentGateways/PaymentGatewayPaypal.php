@@ -61,15 +61,16 @@ class PaymentGatewayPaypal extends PaymentGateway{
      * This function sets up the configuration data
      */
     public function setup(){
-
         $this->business         = $this->config['business'];
-        $this->ipnURL           = $this->config['ipnURL'];
+
+        $this->ipnURL           = $this->config['notificationURL'];
         $this->returnURL        = $this->config['okURL'];
         $this->cancelURL        = $this->config['cancelURL'];
 
         $this->urlPayment       = static::REAL_URL;
 
         if ($this->test) {
+            $this->business     = $this->config['business_test'];
             $this->urlPayment   = static::TEST_URL;
         }
     }

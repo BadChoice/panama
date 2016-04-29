@@ -1,5 +1,4 @@
 <?php namespace BadChoice\Panama\Cart;
-
 use Session;
 class Cart{
     protected   $session_cart_name = 'panama_cart';
