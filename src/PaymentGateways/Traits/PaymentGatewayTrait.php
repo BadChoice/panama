@@ -1,20 +1,31 @@
 <?php namespace BadChoice\Panama\PaymentGateways\Traits;
 
+use BadChoice\Panama\PaymentGateways\PaymentGateway;
+
 trait PaymentGatewayTrait {
 
-    public function save(array $options = []){
-        $this->parseConfig();
-        return parent::save($options);
+    //==================================================================
+    // PUBLIC to use out
+    //==================================================================
+    /**
+     * @param Request $request the request so it can create the Return URL /okUrl and cancelURL automatically for each website
+     * @return \BadChoice\Panama\PaymentGateways\PaymentGatewayPaypal|\BadChoice\Panama\PaymentGateways\PaymentGatewayRedsys|null
+     */
+    public function provider(Request $request){
+        return PaymentGateway::createNew($this->type,
+                                         $this->test,
+                                         $this->getConfigArray($request)
+        );
     }
 
-    public function update(array $attributes = [], array $options = []){
-        $this->parseConfig($attributes);
-        return parent::update($attributes,$options);
-    }
-    public function getConfigAttribute($value){
-        return json_decode($value);
+    public function typeName(){
+        return \BadChoice\Panama\PaymentGateways\PaymentGateway::provides()[$this->type];
     }
 
+
+    //==================================================================
+    // HELPERS
+    //==================================================================
     private function parseConfig($attributes = null){
         $config       = [];
         $configFields = \BadChoice\Panama\PaymentGateways\PaymentGateway::configFieldsFor($this->type);
@@ -38,10 +49,22 @@ trait PaymentGatewayTrait {
         ];
     }
 
-    public function typeName(){
-        return \BadChoice\Panama\PaymentGateways\PaymentGateway::provides()[$this->type];
+
+    //==================================================================
+    // OVERRIDES
+    //==================================================================
+    public function save(array $options = []){
+        $this->parseConfig();
+        return parent::save($options);
     }
 
+    public function update(array $attributes = [], array $options = []){
+        $this->parseConfig($attributes);
+        return parent::update($attributes,$options);
+    }
+    public function getConfigAttribute($value){
+        return json_decode($value);
+    }
     public function __get($property) {
         if(array_key_exists('config',$this->attributes)){
             if( in_array($property,\BadChoice\Panama\PaymentGateways\PaymentGateway::configFieldsFor($this->attributes['type'])) ){
