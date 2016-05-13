@@ -1,7 +1,7 @@
 <?php namespace BadChoice\Panama\PaymentGateways\Traits;
 
 use BadChoice\Panama\PaymentGateways\PaymentGateway;
-
+use Illuminate\Http\Request;
 trait PaymentGatewayTrait {
 
     //==================================================================
@@ -11,7 +11,7 @@ trait PaymentGatewayTrait {
      * @param Request $request the request so it can create the Return URL /okUrl and cancelURL automatically for each website
      * @return \BadChoice\Panama\PaymentGateways\PaymentGatewayPaypal|\BadChoice\Panama\PaymentGateways\PaymentGatewayRedsys|null
      */
-    public function provider(Request $request){
+    public function provider(Request $request = null){
         return PaymentGateway::createNew($this->type,
                                          $this->test,
                                          $this->getConfigArray($request)
@@ -42,10 +42,11 @@ trait PaymentGatewayTrait {
     }
 
     private function getUrls($request, $route){
+        $root = $request ? $request->root() : '';
         return [
-            "notificationURL"   => $request->root() . "/".$route."/ipn/". $this->type,
-            "okURL"             => $request->root() . "/".$route."/ok",
-            "cancelURL"         => $request->root() . "/".$route."/cancel",
+            "notificationURL"   => $root . "/".$route."/ipn/". $this->id,
+            "okURL"             => $root . "/".$route."/ok",
+            "cancelURL"         => $root . "/".$route."/cancel",
         ];
     }
 
